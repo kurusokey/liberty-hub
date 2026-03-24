@@ -3,7 +3,6 @@
 interface VwceData {
   ticker: string;
   price: number;
-  prevClose: number;
   change: number;
   changePct: number;
   currency: string;
