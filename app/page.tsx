@@ -72,7 +72,7 @@ async function fetchGold() {
       initialCapital: parseFloat(s.initial_capital_usdt ?? "2000"),
       drawdown: parseFloat(s.bot_drawdown ?? "0"),
       regime: s.ai_regime ?? s.bot_regime ?? "?",
-      macroSentiment: parseInt(s.fear_greed_score ?? "0"),
+      macroSentiment: parseInt(s.macro_sentiment_score ?? "0"),
       totalTrades: trades.length,
       lastCycle: s.last_cycle_at ?? "",
       dryRun: s.dry_run === "true",
