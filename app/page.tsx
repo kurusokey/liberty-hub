@@ -1,4 +1,5 @@
 import RiskCard from "@/components/RiskCard";
+import GoldCard from "@/components/GoldCard";
 import TradeCard from "@/components/TradeCard";
 import PeaCard from "@/components/PeaCard";
 import TotalBanner from "@/components/TotalBanner";
@@ -47,6 +48,45 @@ async function fetchRisk() {
   }
 }
 
+async function fetchGold() {
+  if (!SUPA_URL || !SUPA_KEY) return null;
+  try {
+    const resp = await fetch(`${SUPA_URL}/rest/v1/gold_settings?select=key,value`, {
+      headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` },
+      next: { revalidate: 60 },
+    });
+    if (!resp.ok) return null;
+    const rows: { key: string; value: string }[] = await resp.json();
+    const s: Record<string, string> = {};
+    for (const r of rows) s[r.key] = r.value;
+
+    const tradesResp = await fetch(`${SUPA_URL}/rest/v1/gold_trades?select=id&limit=1000`, {
+      headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` },
+      next: { revalidate: 60 },
+    });
+    const trades = tradesResp.ok ? await tradesResp.json() : [];
+
+    return {
+      status: s.bot_status ?? "unknown",
+      capital: parseFloat(s.bot_capital ?? "0"),
+      initialCapital: parseFloat(s.initial_capital_usdt ?? "2000"),
+      drawdown: parseFloat(s.bot_drawdown ?? "0"),
+      regime: s.ai_regime ?? s.bot_regime ?? "?",
+      macroSentiment: parseInt(s.fear_greed_score ?? "0"),
+      totalTrades: trades.length,
+      lastCycle: s.last_cycle_at ?? "",
+      dryRun: s.dry_run === "true",
+      priceXau: parseFloat(s["price_XAU/USDT:USDT"] ?? "0"),
+      priceXag: parseFloat(s["price_XAG/USDT:USDT"] ?? "0"),
+      dxyValue: s.dxy_value ?? "?",
+      dxyTrend: s.dxy_trend ?? "?",
+      marketSummary: s.ai_market_summary ?? "",
+    };
+  } catch {
+    return null;
+  }
+}
+
 async function fetchMarket(ticker: string) {
   try {
     const url = `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?range=1mo&interval=1d`;
@@ -76,8 +116,9 @@ async function fetchMarket(ticker: string) {
 }
 
 export default async function Home() {
-  const [risk, vwce] = await Promise.all([
+  const [risk, gold, vwce] = await Promise.all([
     fetchRisk(),
+    fetchGold(),
     fetchMarket("VWCE.DE"),
   ]);
 
@@ -89,16 +130,17 @@ export default async function Home() {
           Liberty Hub
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--muted)" }}>
-          Dashboard financier unifie — Crypto, ETF, PEA
+          Dashboard financier unifie — Crypto, Or, ETF, PEA
         </p>
       </header>
 
       {/* Capital total */}
-      <TotalBanner risk={risk} vwce={vwce} />
+      <TotalBanner risk={risk} gold={gold} vwce={vwce} />
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         <RiskCard data={risk} />
+        <GoldCard data={gold} />
         <TradeCard vwce={vwce} />
         <PeaCard />
       </div>
