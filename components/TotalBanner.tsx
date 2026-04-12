@@ -85,6 +85,15 @@ export default function TotalBanner({ risk, gold, vwce }: Props) {
           >
             PEA
           </a>
+          <a
+            href="https://liberty-immo.vercel.app"
+            target="_blank"
+            rel="noopener"
+            className="px-3 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-80"
+            style={{ background: "#6c63ff", color: "#fff" }}
+          >
+            Immo
+          </a>
         </div>
       </div>
     </div>

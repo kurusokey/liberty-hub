@@ -2,6 +2,7 @@ import RiskCard from "@/components/RiskCard";
 import GoldCard from "@/components/GoldCard";
 import TradeCard from "@/components/TradeCard";
 import PeaCard from "@/components/PeaCard";
+import ImmoCard from "@/components/ImmoCard";
 import TotalBanner from "@/components/TotalBanner";
 
 export const revalidate = 60;
@@ -130,7 +131,7 @@ export default async function Home() {
           Liberty Hub
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--muted)" }}>
-          Dashboard financier unifie — Crypto, Or, ETF, PEA
+          Dashboard financier unifie — Crypto, Or, ETF, PEA, Immo
         </p>
       </header>
 
@@ -143,6 +144,7 @@ export default async function Home() {
         <GoldCard data={gold} />
         <TradeCard vwce={vwce} />
         <PeaCard />
+        <ImmoCard />
       </div>
 
       {/* Footer */}
