@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const resp = await fetch(`${SUPA_URL}/rest/v1/settings?select=key,value`, {
+    const resp = await fetch(`${SUPA_URL}/rest/v1/lr_settings?select=key,value`, {
       headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` },
       next: { revalidate: 60 },
     });
@@ -22,7 +22,7 @@ export async function GET() {
 
     // Trades count
     const tradesResp = await fetch(
-      `${SUPA_URL}/rest/v1/trades?select=id&limit=1000`,
+      `${SUPA_URL}/rest/v1/lr_trades?select=id&limit=1000`,
       { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }, next: { revalidate: 60 } }
     );
     const trades = tradesResp.ok ? await tradesResp.json() : [];
