@@ -147,6 +147,36 @@ export default async function Home() {
         <ImmoCard />
       </div>
 
+      {/* Quick links */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <a
+          href="/dca"
+          className="flex items-center gap-4 rounded-xl p-5 transition-all hover:scale-[1.01]"
+          style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        >
+          <span className="text-3xl">💰</span>
+          <div>
+            <div className="font-bold text-lg" style={{ color: "var(--accent)" }}>DCA + Take Profit</div>
+            <div className="text-sm" style={{ color: "var(--muted)" }}>
+              Achat auto BTC + Or chaque lundi — prise de profit a +10%
+            </div>
+          </div>
+        </a>
+        <a
+          href="https://tickets.sampapaya.com"
+          className="flex items-center gap-4 rounded-xl p-5 transition-all hover:scale-[1.01]"
+          style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        >
+          <span className="text-3xl">🎫</span>
+          <div>
+            <div className="font-bold text-lg" style={{ color: "var(--accent)" }}>goFindMyTickets</div>
+            <div className="text-sm" style={{ color: "var(--muted)" }}>
+              Surveillance billetterie — alertes Telegram et push
+            </div>
+          </div>
+        </a>
+      </div>
+
       {/* Footer */}
       <footer className="mt-12 text-center text-xs" style={{ color: "var(--muted)" }}>
         Liberty Hub v1.0 — Donnees actualisees toutes les minutes
