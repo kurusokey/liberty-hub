@@ -124,62 +124,109 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="min-h-dvh p-4 md:p-8 max-w-6xl mx-auto">
+    <main className="min-h-dvh p-4 md:p-8 max-w-5xl mx-auto">
       {/* Header */}
       <header className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold" style={{ color: "var(--accent)" }}>
           Liberty Hub
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--muted)" }}>
-          Dashboard financier unifie — Crypto, Or, ETF, PEA, Immo
+          Mes projets au meme endroit
         </p>
       </header>
 
-      {/* Capital total */}
-      <TotalBanner risk={risk} gold={gold} vwce={vwce} />
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-        <RiskCard data={risk} />
-        <GoldCard data={gold} />
-        <TradeCard vwce={vwce} />
-        <PeaCard />
-        <ImmoCard />
-      </div>
-
-      {/* Quick links */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        <a
-          href="/dca"
-          className="flex items-center gap-4 rounded-xl p-5 transition-all hover:scale-[1.01]"
-          style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
-        >
+      {/* DCA — Primary */}
+      <a
+        href="/dca"
+        className="block rounded-xl p-6 mb-6 transition-all hover:scale-[1.005]"
+        style={{
+          background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(52,201,122,0.06))",
+          border: "1px solid var(--accent)",
+        }}
+      >
+        <div className="flex items-center gap-4 mb-3">
           <span className="text-3xl">💰</span>
           <div>
-            <div className="font-bold text-lg" style={{ color: "var(--accent)" }}>DCA + Take Profit</div>
+            <div className="text-xl font-bold" style={{ color: "var(--accent)" }}>
+              DCA + Take Profit
+            </div>
             <div className="text-sm" style={{ color: "var(--muted)" }}>
               Achat auto BTC + Or chaque lundi — prise de profit a +10%
             </div>
           </div>
-        </a>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+          <div className="rounded-lg p-3" style={{ background: "var(--surface)" }}>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>BTC</div>
+            <div className="font-bold">{risk?.priceBtc?.toLocaleString("fr-FR") ?? "—"} $</div>
+          </div>
+          <div className="rounded-lg p-3" style={{ background: "var(--surface)" }}>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Or (XAU)</div>
+            <div className="font-bold">{gold?.priceXau?.toLocaleString("fr-FR") ?? "—"} $</div>
+          </div>
+          <div className="rounded-lg p-3" style={{ background: "var(--surface)" }}>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Liberty Risk</div>
+            <div className="font-bold">{risk?.capital?.toFixed(0) ?? "—"} $</div>
+          </div>
+          <div className="rounded-lg p-3" style={{ background: "var(--surface)" }}>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Liberty Gold</div>
+            <div className="font-bold">{gold?.capital?.toFixed(0) ?? "—"} $</div>
+          </div>
+        </div>
+      </a>
+
+      {/* Projects grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <a
           href="https://tickets.sampapaya.com"
-          className="flex items-center gap-4 rounded-xl p-5 transition-all hover:scale-[1.01]"
+          className="flex items-center gap-3 rounded-xl p-4 transition-all hover:scale-[1.01]"
           style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
         >
-          <span className="text-3xl">🎫</span>
+          <span className="text-2xl">🎫</span>
           <div>
-            <div className="font-bold text-lg" style={{ color: "var(--accent)" }}>goFindMyTickets</div>
-            <div className="text-sm" style={{ color: "var(--muted)" }}>
-              Surveillance billetterie — alertes Telegram et push
-            </div>
+            <div className="font-bold" style={{ color: "var(--accent)" }}>goFindMyTickets</div>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Alertes billetterie</div>
+          </div>
+        </a>
+        <a
+          href="https://risk.sampapaya.com"
+          className="flex items-center gap-3 rounded-xl p-4 transition-all hover:scale-[1.01]"
+          style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        >
+          <span className="text-2xl">₿</span>
+          <div>
+            <div className="font-bold" style={{ color: "var(--accent)" }}>Liberty Risk</div>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Bot DCA crypto</div>
+          </div>
+        </a>
+        <a
+          href="https://gold.sampapaya.com"
+          className="flex items-center gap-3 rounded-xl p-4 transition-all hover:scale-[1.01]"
+          style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        >
+          <span className="text-2xl">🥇</span>
+          <div>
+            <div className="font-bold" style={{ color: "var(--accent)" }}>Liberty Gold</div>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>Bot DCA or</div>
           </div>
         </a>
       </div>
 
+      {/* Portfolio overview */}
+      <div className="text-xs uppercase tracking-wider font-semibold mb-3 mt-8" style={{ color: "var(--muted)" }}>
+        Vue d&apos;ensemble
+      </div>
+      <TotalBanner risk={risk} gold={gold} vwce={vwce} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <RiskCard data={risk} />
+        <GoldCard data={gold} />
+        <TradeCard vwce={vwce} />
+      </div>
+
       {/* Footer */}
       <footer className="mt-12 text-center text-xs" style={{ color: "var(--muted)" }}>
-        Liberty Hub v1.0 — Donnees actualisees toutes les minutes
+        Liberty Hub — Donnees actualisees toutes les minutes
       </footer>
     </main>
   );
