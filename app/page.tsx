@@ -145,7 +145,24 @@ export default async function Home() {
         }}
       >
         <div className="flex items-center gap-4 mb-3">
-          <span className="text-3xl">💰</span>
+          <div aria-hidden className="shrink-0">
+            <svg viewBox="0 0 200 140" width="64" height="45" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="hubDcaLine" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#F59E0B" />
+                  <stop offset="100%" stopColor="#34c97a" />
+                </linearGradient>
+                <linearGradient id="hubDcaFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d="M10 112 L42 100 L78 92 L112 72 L148 52 L186 24 L186 130 L10 130 Z" fill="url(#hubDcaFill)" />
+              <path d="M10 112 L42 100 L78 92 L112 72 L148 52 L186 24" fill="none" stroke="url(#hubDcaLine)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="186" cy="24" r="9" fill="#34c97a" opacity="0.2" />
+              <circle cx="186" cy="24" r="4.5" fill="#34c97a" />
+            </svg>
+          </div>
           <div>
             <div className="text-xl font-bold" style={{ color: "var(--accent)" }}>
               DCA + Take Profit

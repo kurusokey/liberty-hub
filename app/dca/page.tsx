@@ -290,7 +290,7 @@ export default async function DCAPage() {
               >
                 <div className="flex items-center gap-3">
                   <span style={{ color: p.type === "TAKE_PROFIT" ? "#34c97a" : "var(--accent)" }}>
-                    {p.type === "TAKE_PROFIT" ? "💰" : "📦"}
+                    {p.type === "TAKE_PROFIT" ? "🎯" : "📦"}
                   </span>
                   <div>
                     <span className="font-medium">{p.asset}</span>
