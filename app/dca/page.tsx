@@ -84,11 +84,25 @@ export default async function DCAPage() {
   const btcProfit = btcDCA?.total_profit_taken ?? 0;
   const xauProfit = goldDCA?.total_profit_taken ?? 0;
 
+  // Frais Bybit : 0.1% par achat + 0.1% par vente (TP)
+  const FEE_RATE = 0.001;
+  const btcBuyFees = btcInvested * FEE_RATE;
+  const btcSellFees = btcProfit > 0 ? btcProfit * FEE_RATE : 0;
+  const btcFees = btcBuyFees + btcSellFees;
+  const btcNetPnL = btcPnL - btcFees;
+  const xauBuyFees = xauInvested * FEE_RATE;
+  const xauSellFees = xauProfit > 0 ? xauProfit * FEE_RATE : 0;
+  const xauFees = xauBuyFees + xauSellFees;
+  const xauNetPnL = xauPnL - xauFees;
+
   const totalInvested = btcInvested + xauInvested;
   const totalValue = btcValue + xauValue;
   const totalPnL = btcPnL + xauPnL;
   const totalPnLPct = totalInvested > 0 ? (totalPnL / totalInvested) * 100 : 0;
   const totalProfit = btcProfit + xauProfit;
+  const totalFees = btcFees + xauFees;
+  const totalNetPnL = totalPnL - totalFees;
+  const totalNetPct = totalInvested > 0 ? (totalNetPnL / totalInvested) * 100 : 0;
 
   const allPurchases = [
     ...(btcDCA?.purchases ?? []).map(p => ({ ...p, asset: "BTC" })),
@@ -130,6 +144,27 @@ export default async function DCAPage() {
             </div>
           </div>
         </div>
+        {/* Frais + Net */}
+        <div className="mt-4 pt-4 grid grid-cols-2 md:grid-cols-3 gap-4 text-center" style={{ borderTop: "1px solid var(--border)" }}>
+          <div>
+            <div className="text-xs uppercase tracking-wider" style={{ color: "var(--muted)" }}>Frais Bybit (0,1%)</div>
+            <div className="text-lg font-bold mt-1" style={{ color: "#f7564f" }}>
+              -{formatUSD(totalFees)} $
+            </div>
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-wider" style={{ color: "var(--muted)" }}>P&L net (apres frais)</div>
+            <div className="text-lg font-bold mt-1" style={{ color: totalNetPnL >= 0 ? "#34c97a" : "#f7564f" }}>
+              {totalNetPnL >= 0 ? "+" : ""}{formatUSD(totalNetPnL)} $ ({totalNetPct >= 0 ? "+" : ""}{totalNetPct.toFixed(1)}%)
+            </div>
+          </div>
+          <div className="col-span-2 md:col-span-1">
+            <div className="text-xs uppercase tracking-wider" style={{ color: "var(--muted)" }}>Benefice reel net</div>
+            <div className="text-lg font-bold mt-1" style={{ color: (totalNetPnL + totalProfit) >= 0 ? "#34c97a" : "#f7564f" }}>
+              {(totalNetPnL + totalProfit) >= 0 ? "+" : ""}{formatUSD(totalNetPnL + totalProfit)} $
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Two cards */}
@@ -167,9 +202,19 @@ export default async function DCAPage() {
               <span className="font-medium">{formatUSD(btcValue)} $</span>
             </div>
             <div className="flex justify-between">
-              <span style={{ color: "var(--muted)" }}>P&L</span>
+              <span style={{ color: "var(--muted)" }}>P&L brut</span>
               <span className="font-bold" style={{ color: btcPnL >= 0 ? "#34c97a" : "#f7564f" }}>
                 {btcPnL >= 0 ? "+" : ""}{formatUSD(btcPnL)} $ ({btcPnLPct >= 0 ? "+" : ""}{btcPnLPct.toFixed(1)}%)
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span style={{ color: "var(--muted)" }}>Frais (0,1%)</span>
+              <span style={{ color: "#f7564f" }}>-{formatUSD(btcFees)} $</span>
+            </div>
+            <div className="flex justify-between">
+              <span style={{ color: "var(--muted)" }}>P&L net</span>
+              <span className="font-bold" style={{ color: btcNetPnL >= 0 ? "#34c97a" : "#f7564f" }}>
+                {btcNetPnL >= 0 ? "+" : ""}{formatUSD(btcNetPnL)} $
               </span>
             </div>
             <div className="flex justify-between">
@@ -237,9 +282,19 @@ export default async function DCAPage() {
               <span className="font-medium">{formatUSD(xauValue)} $</span>
             </div>
             <div className="flex justify-between">
-              <span style={{ color: "var(--muted)" }}>P&L</span>
+              <span style={{ color: "var(--muted)" }}>P&L brut</span>
               <span className="font-bold" style={{ color: xauPnL >= 0 ? "#34c97a" : "#f7564f" }}>
                 {xauPnL >= 0 ? "+" : ""}{formatUSD(xauPnL)} $ ({xauPnLPct >= 0 ? "+" : ""}{xauPnLPct.toFixed(1)}%)
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span style={{ color: "var(--muted)" }}>Frais (0,1%)</span>
+              <span style={{ color: "#f7564f" }}>-{formatUSD(xauFees)} $</span>
+            </div>
+            <div className="flex justify-between">
+              <span style={{ color: "var(--muted)" }}>P&L net</span>
+              <span className="font-bold" style={{ color: xauNetPnL >= 0 ? "#34c97a" : "#f7564f" }}>
+                {xauNetPnL >= 0 ? "+" : ""}{formatUSD(xauNetPnL)} $
               </span>
             </div>
             <div className="flex justify-between">
